@@ -4,10 +4,10 @@ var Schema = mongoose.Schema;
 
 var AuthorSchema = new Schema(
   {
-    first_name: {type: String, required: true, maxLength: 100},
-    family_name: {type: String, required: true, maxLength: 100},
-    date_of_birth: {type: Date},
-    date_of_death: {type: Date},
+    first_name: { type: String, required: true, maxLength: 100 },
+    family_name: { type: String, required: true, maxLength: 100 },
+    date_of_birth: { type: Date },
+    date_of_death: { type: Date },
   }
 );
 
@@ -29,14 +29,16 @@ AuthorSchema
 
 // Virtual for author's lifespan
 AuthorSchema.virtual('lifespan').get(function() {
-  var birthYear = this.date_of_birth ? this.date_of_birth.getFullYear() : '';
-  var deathYear = this.date_of_death ? this.date_of_death.getFullYear() : '';
-
-  if (!deathYear) {
-      return birthYear + ' - ';
-  } else {
-      return birthYear + ' - ' + deathYear;
+  var lifetime_string = '';
+  if (this.date_of_birth) {
+    console.log(this.date_of_birth);
+    lifetime_string = this.date_of_birth.getFullYear().toString();
   }
+  lifetime_string += ' - ';
+  if (this.date_of_death) {
+    lifetime_string += this.date_of_death.getFullYear()
+  }
+  return lifetime_string;
 });
 
 //Export model
